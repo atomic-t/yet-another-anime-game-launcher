@@ -24,15 +24,15 @@ int my_getaddrinfo(const char *hostname, const char *servname, const struct addr
                     fprintf(stderr, "[yaagl_dns] Block timer started for %s\n", hostname);
                 }
                 double diff = difftime(now, first_hit);
-                int duration = 6; // default 6s
+                int duration = 4; // default 4s
                 const char* env_dur = getenv("YAAGL_BLOCK_DURATION");
                 if (env_dur) {
                     int d = atoi(env_dur);
                     if (d > 0) duration = d;
                 }
                 if (diff < duration) {
-                    fprintf(stderr, "[yaagl_dns] [BLOCKED] %s (%.0fs / %ds) -> Routing to 0.0.0.0\n", hostname, diff, duration);
-                    return getaddrinfo("0.0.0.0", servname, hints, res);
+                    fprintf(stderr, "[yaagl_dns] [BLOCKED] %s (%.0fs / %ds) -> Returning EAI_NONAME\n", hostname, diff, duration);
+                    return EAI_NONAME;
                 } else {
                     fprintf(stderr, "[yaagl_dns] [ALLOWED] %s (%.0fs elapsed) -> Pass through to real DNS\n", hostname, diff);
                 }
