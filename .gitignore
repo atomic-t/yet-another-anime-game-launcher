@@ -40,4 +40,5 @@ server_secret.ts
 **/__pycache__
 
 pnpm-workspace.yaml
+sidecar/dns_delay/libyaagl_dns.dylib
 
