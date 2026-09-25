@@ -134,9 +134,7 @@ export const vi_VN: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "Đang cài đặt HoYoPlay (vui lòng hoàn tất trong cửa sổ cài đặt)",
   HOYOPLAY_INSTALL_FAILED: "Cài đặt HoYoPlay thất bại",
   HOYOPLAY_INSTALL_FAILED_DESC: "Không tìm thấy tệp thực thi HoYoPlay sau khi cài đặt. Vui lòng thử lại.",
-  SETTING_LAUNCH_HOYOPLAY: "Khởi động HoYoPlay",
   REFRESH: "Làm mới trạng thái trò chơi",
   PAUSE_ANIMATION: "Tạm dừng hình ảnh động nền",
   PLAY_ANIMATION: "Phát hình ảnh động nền",
-  PRE_INSTALL: "Tải trước",
 };

@@ -135,9 +135,7 @@ export const ja_JP: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "HoYoPlay をインストール中（インストーラーの指示に従ってください）",
   HOYOPLAY_INSTALL_FAILED: "HoYoPlay インストール失敗",
   HOYOPLAY_INSTALL_FAILED_DESC: "インストール後に HoYoPlay 実行ファイルが見つかりませんでした。もう一度お試しください。",
-  SETTING_LAUNCH_HOYOPLAY: "HoYoPlay 起動",
   REFRESH: "状態を更新",
   PAUSE_ANIMATION: "背景アニメーションを一時停止",
   PLAY_ANIMATION: "背景アニメーションを再生",
-  PRE_INSTALL: "事前ダウンロード",
 };

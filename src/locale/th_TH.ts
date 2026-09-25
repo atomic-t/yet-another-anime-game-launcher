@@ -132,9 +132,7 @@ export const th_TH: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "กำลังติดตั้ง HoYoPlay (โปรดดำเนินการในหน้าต่างตัวติดตั้ง)",
   HOYOPLAY_INSTALL_FAILED: "การติดตั้ง HoYoPlay ล้มเหลว",
   HOYOPLAY_INSTALL_FAILED_DESC: "ไม่พบไฟล์ปฏิบัติการ HoYoPlay หลังจากติดตั้ง โปรดลองอีกครั้ง",
-  SETTING_LAUNCH_HOYOPLAY: "เริ่ม HoYoPlay",
   REFRESH: "รีเฟรชสถานะเกม",
   PAUSE_ANIMATION: "หยุดภาพเคลื่อนไหวพื้นหลังชั่วคราว",
   PLAY_ANIMATION: "เล่นภาพเคลื่อนไหวพื้นหลัง",
-  PRE_INSTALL: "ดาวน์โหลดล่วงหน้า",
 };

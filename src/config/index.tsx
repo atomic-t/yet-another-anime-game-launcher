@@ -181,7 +181,7 @@ export async function createConfiguration({
                       size="sm"
                       onClick={() => props.onClose("launch-hoyoplay")}
                     >
-                      {locale.get("SETTING_LAUNCH_HOYOPLAY")}
+                      {locale.get("LAUNCH_HOYOPLAY")}
                     </Button>
                     <Divider />
                     <Button

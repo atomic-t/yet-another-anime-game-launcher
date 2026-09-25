@@ -136,9 +136,7 @@ export const de_DE: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "HoYoPlay wird installiert (bitte im Installer-Fenster abschließen)",
   HOYOPLAY_INSTALL_FAILED: "Installation von HoYoPlay fehlgeschlagen",
   HOYOPLAY_INSTALL_FAILED_DESC: "Die ausführbare Datei von HoYoPlay wurde nach der Installation nicht gefunden. Bitte versuchen Sie es erneut.",
-  SETTING_LAUNCH_HOYOPLAY: "HoYoPlay starten",
   REFRESH: "Spielstatus aktualisieren",
   PAUSE_ANIMATION: "Hintergrundanimation anhalten",
   PLAY_ANIMATION: "Hintergrundanimation abspielen",
-  PRE_INSTALL: "Pre-Install",
 };

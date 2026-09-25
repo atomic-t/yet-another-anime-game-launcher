@@ -135,9 +135,7 @@ export const ru_RU: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "Установка HoYoPlay (завершите установку в появившемся окне)",
   HOYOPLAY_INSTALL_FAILED: "Сбой установки HoYoPlay",
   HOYOPLAY_INSTALL_FAILED_DESC: "Не удалось найти исполняемый файл HoYoPlay после установки. Попробуйте еще раз.",
-  SETTING_LAUNCH_HOYOPLAY: "Запустить HoYoPlay",
   REFRESH: "Обновить статус игры",
   PAUSE_ANIMATION: "Приостановить анимацию фона",
   PLAY_ANIMATION: "Воспроизвести анимацию фона",
-  PRE_INSTALL: "Предзагрузка",
 };

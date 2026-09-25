@@ -134,9 +134,7 @@ export const en: typeof zh_CN = {
   INSTALLING_HOYOPLAY: "Installing HoYoPlay in Wine",
   HOYOPLAY_INSTALL_FAILED: "HoYoPlay installation failed",
   HOYOPLAY_INSTALL_FAILED_DESC: "Could not find HoYoPlay executable after installation. Please try again.",
-  SETTING_LAUNCH_HOYOPLAY: "Launch HoYoPlay",
   REFRESH: "Refresh Game Status",
   PAUSE_ANIMATION: "Pause Background Animation",
   PLAY_ANIMATION: "Play Background Animation",
-  PRE_INSTALL: "Pre-Install",
 };

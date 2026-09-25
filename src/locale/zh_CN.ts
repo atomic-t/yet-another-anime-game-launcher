@@ -129,9 +129,7 @@ export const zh_CN = {
   INSTALLING_HOYOPLAY: "正在通过 Wine 安装 HoYoPlay",
   HOYOPLAY_INSTALL_FAILED: "HoYoPlay 安装失败",
   HOYOPLAY_INSTALL_FAILED_DESC: "未能找到安装后的 HoYoPlay 执行程序，请重试。",
-  SETTING_LAUNCH_HOYOPLAY: "启动 HoYoPlay",
   REFRESH: "刷新游戏状态",
   PAUSE_ANIMATION: "暂停背景动画",
   PLAY_ANIMATION: "播放背景动画",
-  PRE_INSTALL: "预下载",
 };

@@ -384,7 +384,6 @@ export async function createLauncher({
                   colorScheme="neutral"
                   disabled={programBusy()}
                   onClick={() => taskQueue.next(launchHoyoplay!).catch(fatal)}
-                  title={locale.get("LAUNCH_HOYOPLAY")}
                   style={{
                     "backdrop-filter": "blur(14px)",
                     "-webkit-backdrop-filter": "blur(14px)",
@@ -407,9 +406,7 @@ export async function createLauncher({
                     )
                   }
                 >
-                  {showPredownloadPrompt() || Boolean(predownloadVersion?.())
-                    ? locale.get("PRE_INSTALL")
-                    : locale.get("UPDATE")}
+                  HoYoPlay
                 </Button>
               </Show>
               <Popover
