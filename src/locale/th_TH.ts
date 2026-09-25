@@ -123,4 +123,18 @@ export const th_TH: typeof zh_CN = {
   SETTING_CHECK_UPDATE: "ตรวจสอบการอัปเดต YAAGL",
   ALREADY_LATEST_VERSION: "คุณใช้เวอร์ชันล่าสุดอยู่แล้ว",
   UPDATE_LAUNCHER: "อัปเดต Launcher",
+
+  LAUNCH_HOYOPLAY: "เริ่ม HoYoPlay",
+  HOYOPLAY_RUNNING: "HoYoPlay กำลังทำงาน (ปิดหลังจากอัปเดตเสร็จสิ้น)",
+  HOYOPLAY_NOT_FOUND: "ไม่พบ HoYoPlay",
+  HOYOPLAY_NOT_FOUND_DESC: "ไม่พบ HoYoPlay ใน Wine prefix คุณต้องการดาวน์โหลดและติดตั้งตอนนี้หรือไม่?",
+  DOWNLOADING_HOYOPLAY: "กำลังดาวน์โหลดตัวติดตั้ง HoYoPlay",
+  INSTALLING_HOYOPLAY: "กำลังติดตั้ง HoYoPlay (โปรดดำเนินการในหน้าต่างตัวติดตั้ง)",
+  HOYOPLAY_INSTALL_FAILED: "การติดตั้ง HoYoPlay ล้มเหลว",
+  HOYOPLAY_INSTALL_FAILED_DESC: "ไม่พบไฟล์ปฏิบัติการ HoYoPlay หลังจากติดตั้ง โปรดลองอีกครั้ง",
+  SETTING_LAUNCH_HOYOPLAY: "เริ่ม HoYoPlay",
+  REFRESH: "รีเฟรชสถานะเกม",
+  PAUSE_ANIMATION: "หยุดภาพเคลื่อนไหวพื้นหลังชั่วคราว",
+  PLAY_ANIMATION: "เล่นภาพเคลื่อนไหวพื้นหลัง",
+  PRE_INSTALL: "ดาวน์โหลดล่วงหน้า",
 };

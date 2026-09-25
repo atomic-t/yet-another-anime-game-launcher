@@ -110,7 +110,7 @@ export async function createConfiguration({
 
   return {
     UI: function (props: {
-      onClose: (action: "check-integrity" | "close") => void;
+      onClose: (action: "check-integrity" | "close" | "launch-hoyoplay") => void;
     }) {
       return (
         <ModalContent height={570} width={1000} maxWidth={1000}>
@@ -175,6 +175,13 @@ export async function createConfiguration({
                       onClick={() => props.onClose("check-integrity")}
                     >
                       {locale.get("SETTING_CHECK_INTEGRITY")}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => props.onClose("launch-hoyoplay")}
+                    >
+                      {locale.get("SETTING_LAUNCH_HOYOPLAY")}
                     </Button>
                     <Divider />
                     <Button

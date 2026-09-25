@@ -27,6 +27,7 @@ import {
 } from "./program-update-game";
 import { downloadAndInstallGameProgram } from "./program-install-game";
 import { launchGameProgram } from "./program-launch-game";
+import { launchHoyoplayProgram } from "../hoyoplay";
 import { patchRevertProgram } from "../patch";
 import { Aria2 } from "@aria2";
 import { Wine } from "@wine";
@@ -308,6 +309,27 @@ export async function createNAPChannelClient({
       });
       batch(() => {
         setGameVersion(GAME_LATEST_VERSION);
+      });
+    },
+    refreshGameState: async () => {
+      const state = await checkGameState(locale, server);
+      batch(() => {
+        setInstalled(state.gameInstalled ? "INSTALLED" : "NOT_INSTALLED");
+        setGameInstallDir(state.gameInstallDir ?? "");
+        setGameVersion(state.gameVersion ?? "0.0.0");
+      });
+    },
+    launchHoyoplay: async function* () {
+      yield* launchHoyoplayProgram({
+        wine,
+        locale,
+        server,
+      });
+      const state = await checkGameState(locale, server);
+      batch(() => {
+        setInstalled(state.gameInstalled ? "INSTALLED" : "NOT_INSTALLED");
+        setGameInstallDir(state.gameInstallDir ?? "");
+        setGameVersion(state.gameVersion ?? "0.0.0");
       });
     },
     async *launch(config: Config) {

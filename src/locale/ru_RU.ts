@@ -126,4 +126,18 @@ export const ru_RU: typeof zh_CN = {
   SETTING_CHECK_UPDATE: "Проверить обновления YAAGL",
   ALREADY_LATEST_VERSION: "Вы уже используете последнюю версию.",
   UPDATE_LAUNCHER: "Обновить лаунчер",
+
+  LAUNCH_HOYOPLAY: "Запустить HoYoPlay",
+  HOYOPLAY_RUNNING: "HoYoPlay запущен (выйдите из него после завершения обновления)",
+  HOYOPLAY_NOT_FOUND: "HoYoPlay не найден",
+  HOYOPLAY_NOT_FOUND_DESC: "HoYoPlay не найден в префиксе Wine. Скачать и установить его сейчас?",
+  DOWNLOADING_HOYOPLAY: "Загрузка установщика HoYoPlay",
+  INSTALLING_HOYOPLAY: "Установка HoYoPlay (завершите установку в появившемся окне)",
+  HOYOPLAY_INSTALL_FAILED: "Сбой установки HoYoPlay",
+  HOYOPLAY_INSTALL_FAILED_DESC: "Не удалось найти исполняемый файл HoYoPlay после установки. Попробуйте еще раз.",
+  SETTING_LAUNCH_HOYOPLAY: "Запустить HoYoPlay",
+  REFRESH: "Обновить статус игры",
+  PAUSE_ANIMATION: "Приостановить анимацию фона",
+  PLAY_ANIMATION: "Воспроизвести анимацию фона",
+  PRE_INSTALL: "Предзагрузка",
 };

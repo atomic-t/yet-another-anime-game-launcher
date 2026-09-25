@@ -170,6 +170,14 @@ export async function createCBJQChannelClient({
         setGameVersion(GAME_LATEST_VERSION);
       });
     },
+    refreshGameState: async () => {
+      const state = await checkGameState(locale, server);
+      batch(() => {
+        setInstalled(state.gameInstalled ? "INSTALLED" : "NOT_INSTALLED");
+        setGameInstallDir(state.gameInstallDir ?? "");
+        setGameVersion(state.gameVersion ?? "0.0.0");
+      });
+    },
     async *launch(config: Config) {
       if (
         gt(gameCurrentVersion(), CURRENT_SUPPORTED_VERSION) &&

@@ -56,5 +56,47 @@ export async function getLatestVersionInfo(
   ).json();
   const game = ret.data.game_packages.find(x => x.game.biz == server.id);
   if (!game) throw new Error(`failed to fetch game information: ${server.id}`);
+
+  // Hoyoverse games now use getGameBranches for live versions and pre-downloads
+  try {
+    const branchesUrl = server.update_url.replace(
+      "getGamePackages",
+      "getGameBranches"
+    );
+    const branchesRet = await (await fetch(branchesUrl)).json();
+    const branch = branchesRet?.data?.game_branches?.find(
+      (x: { game: { biz: string } }) => x.game.biz == server.id
+    );
+    if (branch) {
+      if (branch.main?.tag) {
+        if (!game.main) {
+          game.main = { major: {} as any, patches: [] };
+        }
+        if (!game.main.major) {
+          game.main.major = {} as any;
+        }
+        game.main.major.version = branch.main.tag;
+      }
+      if (branch.pre_download?.tag) {
+        if (!game.pre_download) {
+          game.pre_download = { major: {} as any, patches: [] };
+        }
+        if (!game.pre_download.major) {
+          game.pre_download.major = {
+            version: branch.pre_download.tag,
+            game_pkgs: [],
+            audio_pkgs: [],
+            res_list_url: "",
+          };
+        } else {
+          game.pre_download.major.version = branch.pre_download.tag;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to fetch game branches:", e);
+  }
+
   return game;
 }
+

@@ -126,4 +126,18 @@ export const ja_JP: typeof zh_CN = {
   SETTING_CHECK_UPDATE: "YAAGL更新を確認する",
   ALREADY_LATEST_VERSION: "既に最新バージョンを使用しています。",
   UPDATE_LAUNCHER: "ランチャー更新",
+
+  LAUNCH_HOYOPLAY: "HoYoPlay 起動",
+  HOYOPLAY_RUNNING: "HoYoPlay 実行中（更新完了後に終了してください）",
+  HOYOPLAY_NOT_FOUND: "HoYoPlay が見つかりません",
+  HOYOPLAY_NOT_FOUND_DESC: "Wine プレフィックスに HoYoPlay が見つかりませんでした。今すぐダウンロードしてインストールしますか？",
+  DOWNLOADING_HOYOPLAY: "HoYoPlay インストーラーをダウンロード中",
+  INSTALLING_HOYOPLAY: "HoYoPlay をインストール中（インストーラーの指示に従ってください）",
+  HOYOPLAY_INSTALL_FAILED: "HoYoPlay インストール失敗",
+  HOYOPLAY_INSTALL_FAILED_DESC: "インストール後に HoYoPlay 実行ファイルが見つかりませんでした。もう一度お試しください。",
+  SETTING_LAUNCH_HOYOPLAY: "HoYoPlay 起動",
+  REFRESH: "状態を更新",
+  PAUSE_ANIMATION: "背景アニメーションを一時停止",
+  PLAY_ANIMATION: "背景アニメーションを再生",
+  PRE_INSTALL: "事前ダウンロード",
 };

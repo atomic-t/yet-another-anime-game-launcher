@@ -35,4 +35,6 @@ export interface ChannelClient {
     locale: Locale,
     config: Partial<Config>
   ): Promise<() => JSXElement>;
+  launchHoyoplay?(): CommonUpdateProgram;
+  refreshGameState?(): Promise<void>;
 }

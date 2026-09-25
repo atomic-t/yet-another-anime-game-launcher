@@ -1,10 +1,11 @@
-import { openDir, fatal, open } from "@utils";
+import { openDir, fatal, open, getKeyOrDefault, setKey } from "@utils";
 import {
   Box,
   Button,
   ButtonGroup,
   createDisclosure,
   Flex,
+  HStack,
   IconButton,
   Modal,
   ModalOverlay,
@@ -40,6 +41,58 @@ const IconSetting = createIcon({
   },
 });
 
+const IconRefresh = (props: { isSpinning?: boolean }) => (
+  <svg
+    class={props.isSpinning ? "spin-animation" : ""}
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+    <path d="M3 3v5h5" />
+    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+    <path d="M16 16h5v5" />
+  </svg>
+);
+
+const IconCloudDownload = () => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+    <path d="M12 12v9" />
+    <path d="m8 17 4 4 4-4" />
+  </svg>
+);
+
+const IconUpdate = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+    <polyline points="21 3 21 8 16 8" />
+  </svg>
+);
+
 export async function createLauncher({
   wine,
   locale,
@@ -67,6 +120,8 @@ export async function createLauncher({
     dismissPredownload,
     predownloadVersion,
     createConfig,
+    launchHoyoplay,
+    refreshGameState,
   },
   onCheckUpdate,
 }: {
@@ -110,7 +165,41 @@ export async function createLauncher({
 
     const { isOpen, onOpen, onClose } = createDisclosure();
 
+    let videoRef: HTMLVideoElement | undefined;
     const [videoLoaded, setVideoLoaded] = createSignal(false);
+    const [isVideoPaused, setIsVideoPaused] = createSignal(false);
+    const [isRefreshing, setIsRefreshing] = createSignal(false);
+
+    async function toggleVideoPlayback() {
+      if (!videoRef) return;
+      if (videoRef.paused) {
+        try {
+          await videoRef.play();
+          setIsVideoPaused(false);
+          await setKey("launcher_video_paused", "false").catch(() => {});
+        } catch {
+          // ignore
+        }
+      } else {
+        videoRef.pause();
+        setIsVideoPaused(true);
+        await setKey("launcher_video_paused", "true").catch(() => {});
+      }
+    }
+
+    async function onRefreshClick() {
+      if (programBusy() || isRefreshing()) return;
+      setIsRefreshing(true);
+      try {
+        if (refreshGameState) {
+          await refreshGameState();
+        }
+      } catch (e) {
+        console.error("Failed to refresh game state", e);
+      } finally {
+        setTimeout(() => setIsRefreshing(false), 500);
+      }
+    }
 
     async function onButtonClick() {
       if (programBusy()) return; // ignore
@@ -136,18 +225,64 @@ export async function createLauncher({
       >
         <Show when={background_video}>
           <video
+            ref={videoRef}
             class="background-video"
             src={background_video}
             autoplay
             loop
             muted
             playsinline
-            onLoadedData={() => setVideoLoaded(true)}
+            onLoadedData={async () => {
+              setVideoLoaded(true);
+              const savedPaused = await getKeyOrDefault(
+                "launcher_video_paused",
+                "false"
+              ).catch(() => "false");
+              if (savedPaused === "true" && videoRef) {
+                videoRef.pause();
+                setIsVideoPaused(true);
+              }
+            }}
             style={{
               opacity: videoLoaded() ? 1 : 0,
               transition: "opacity 0.5s ease-in",
             }}
           />
+          <button
+            class="video-control-button"
+            onClick={toggleVideoPlayback}
+            aria-label={
+              isVideoPaused()
+                ? locale.get("PLAY_ANIMATION")
+                : locale.get("PAUSE_ANIMATION")
+            }
+            title={
+              isVideoPaused()
+                ? locale.get("PLAY_ANIMATION")
+                : locale.get("PAUSE_ANIMATION")
+            }
+          >
+            {isVideoPaused() ? (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <polygon points="6 3 20 12 6 21 6 3" />
+              </svg>
+            ) : (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            )}
+          </button>
         </Show>
         <Show when={background_theme}>
           <div
@@ -232,31 +367,84 @@ export async function createLauncher({
                 </Progress>
               </Show>
             </Box>
-            <Popover
-              placement="top"
-              opened={showPredownloadPrompt() && !isOpen()}
-              onClose={dismissPredownload}
-              closeOnBlur={true}
-            >
-              <PopoverTrigger as={Box}>
-                <ButtonGroup
+            <HStack spacing="$3" alignItems="center">
+              <Show
+                when={
+                  launchHoyoplay &&
+                  installState() == "INSTALLED" &&
+                  (updateRequired() ||
+                    showPredownloadPrompt() ||
+                    Boolean(predownloadVersion?.()))
+                }
+              >
+                <Button
                   class="launch-button"
-                  size="xl"
-                  attached
-                  minWidth={150}
+                  size="md"
+                  variant="outline"
+                  colorScheme="neutral"
+                  disabled={programBusy()}
+                  onClick={() => taskQueue.next(launchHoyoplay!).catch(fatal)}
+                  title={locale.get("LAUNCH_HOYOPLAY")}
+                  style={{
+                    "backdrop-filter": "blur(14px)",
+                    "-webkit-backdrop-filter": "blur(14px)",
+                    "background-color": "rgba(25, 25, 25, 0.55)",
+                    "border-color": "rgba(255, 255, 255, 0.35)",
+                    color: "#ffffff",
+                    "text-shadow": "0 1px 3px rgba(0, 0, 0, 0.8)",
+                    "font-weight": "500",
+                    "font-size": "14px",
+                    "height": "40px",
+                    "padding": "0 18px",
+                    "border-radius": "20px",
+                    "box-shadow": "0 4px 12px rgba(0, 0, 0, 0.25)",
+                  }}
+                  leftIcon={
+                    showPredownloadPrompt() || Boolean(predownloadVersion?.()) ? (
+                      <IconCloudDownload />
+                    ) : (
+                      <IconUpdate />
+                    )
+                  }
                 >
-                  <Button
-                    mr="-1px"
-                    disabled={programBusy()}
-                    onClick={() => onButtonClick().catch(fatal)}
+                  {showPredownloadPrompt() || Boolean(predownloadVersion?.())
+                    ? locale.get("PRE_INSTALL")
+                    : locale.get("UPDATE")}
+                </Button>
+              </Show>
+              <Popover
+                placement="top"
+                opened={!launchHoyoplay && showPredownloadPrompt() && !isOpen()}
+                onClose={dismissPredownload}
+                closeOnBlur={true}
+              >
+                <PopoverTrigger as={Box}>
+                  <ButtonGroup
+                    class="launch-button"
+                    size="xl"
+                    attached
+                    minWidth={150}
                   >
-                    {installState() == "INSTALLED"
-                      ? updateRequired()
-                        ? locale.get("UPDATE")
-                        : locale.get("LAUNCH")
-                      : locale.get("INSTALL")}
-                  </Button>
-                  <Show when={installState() == "INSTALLED"}>
+                    <Button
+                      mr="-1px"
+                      disabled={programBusy() || isRefreshing()}
+                      onClick={() => onButtonClick().catch(fatal)}
+                    >
+                      {installState() == "INSTALLED"
+                        ? updateRequired()
+                          ? locale.get("UPDATE")
+                          : locale.get("LAUNCH")
+                        : locale.get("INSTALL")}
+                    </Button>
+                    <IconButton
+                      mr="-1px"
+                      onClick={() => onRefreshClick().catch(fatal)}
+                      disabled={programBusy() || isRefreshing()}
+                      fontSize={20}
+                      aria-label={locale.get("REFRESH")}
+                      title={locale.get("REFRESH")}
+                      icon={<IconRefresh isSpinning={isRefreshing()} />}
+                    />
                     <IconButton
                       onClick={onOpen}
                       disabled={programBusy()}
@@ -264,30 +452,30 @@ export async function createLauncher({
                       aria-label="Settings"
                       icon={<IconSetting />}
                     />
-                  </Show>
-                </ButtonGroup>
-              </PopoverTrigger>
-              <PopoverContent
-                borderColor="$success3"
-                bg="$success3"
-                color="$success11"
-                width={200}
-              >
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverBody width={200}>
-                  <Button
-                    id="predownload"
-                    colorScheme="success"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => nonUrgentTaskQueue.next(predownload)}
-                  >
-                    {locale.format("PREDOWNLOAD_READY", [predownloadVersion()])}
-                  </Button>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+                  </ButtonGroup>
+                </PopoverTrigger>
+                <PopoverContent
+                  borderColor="$success3"
+                  bg="$success3"
+                  color="$success11"
+                  width={200}
+                >
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <PopoverBody width={200}>
+                    <Button
+                      id="predownload"
+                      colorScheme="success"
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => nonUrgentTaskQueue.next(predownload)}
+                    >
+                      {locale.format("PREDOWNLOAD_READY", [predownloadVersion()])}
+                    </Button>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </HStack>
             <Modal opened={isOpen()} onClose={onClose} scrollBehavior="inside">
               <ModalOverlay />
               <ConfigurationUI
@@ -295,6 +483,8 @@ export async function createLauncher({
                   onClose();
                   if (action == "check-integrity") {
                     taskQueue.next(checkIntegrity);
+                  } else if (action == "launch-hoyoplay" && launchHoyoplay) {
+                    taskQueue.next(launchHoyoplay);
                   }
                 }}
               ></ConfigurationUI>
