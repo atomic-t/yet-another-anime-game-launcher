@@ -38,10 +38,15 @@ export async function* patchProgram(
   if (!config.patchOff) {
     for (const file of server.patched) {
       if (file.tag === "workaround3" && config.workaround3) continue;
-      await forceMove(
-        join(gameDir, file.file),
-        join(gameDir, file.file + ".bak")
-      );
+      if (
+        (await fileOrDirExists(join(gameDir, file.file))) &&
+        !(await fileOrDirExists(join(gameDir, file.file + ".bak")))
+      ) {
+        await forceMove(
+          join(gameDir, file.file),
+          join(gameDir, file.file + ".bak")
+        );
+      }
       await putLocal(file.diffUrl, join(gameDir, file.file + ".diff"));
       await xdelta3(
         join(gameDir, file.file + ".bak"),
@@ -53,7 +58,10 @@ export async function* patchProgram(
     }
     for (const { file, tag } of server.removed) {
       if (tag === "workaround3" && config.workaround3) continue;
-      if (await fileOrDirExists(join(gameDir, file))) {
+      if (
+        (await fileOrDirExists(join(gameDir, file))) &&
+        !(await fileOrDirExists(join(gameDir, file + ".bak")))
+      ) {
         await forceMove(join(gameDir, file), join(gameDir, file + ".bak"));
       }
     }
@@ -68,7 +76,9 @@ export async function* patchProgram(
 
   for (const f of DXMT_FILES) {
     const wineLibPath = resolve(`./wine/lib/wine/x86_64-windows/${f}`);
-    await forceMove(wineLibPath, wineLibPath + ".bak");
+    if (!(await fileOrDirExists(wineLibPath + ".bak"))) {
+      await forceMove(wineLibPath, wineLibPath + ".bak");
+    }
     await cp(`./dxmt/${f}`, wineLibPath);
   }
 
@@ -121,7 +131,7 @@ export async function* patchProgram(
     );
   }
 
-  setKey("patched", "1");
+  await setKey("patched", "1");
 }
 
 export async function* patchRevertProgram(
@@ -160,12 +170,14 @@ export async function* patchRevertProgram(
   if (wine.attributes.renderBackend == "dxmt") {
     for (const f of DXMT_FILES) {
       const wineLibPath = resolve(`./wine/lib/wine/x86_64-windows/${f}`);
-      await forceMove(wineLibPath + ".bak", wineLibPath);
+      if (await fileOrDirExists(wineLibPath + ".bak")) {
+        await forceMove(wineLibPath + ".bak", wineLibPath);
+      }
     }
   }
   if (config.reshade) {
     await removeFileIfExists(join(gameDir, "dxgi.dll"));
     await removeFileIfExists(join(gameDir, "d3dcompiler_47.dll"));
   }
-  setKey("patched", null);
+  await setKey("patched", null);
 }

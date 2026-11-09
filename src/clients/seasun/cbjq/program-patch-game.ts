@@ -34,7 +34,9 @@ export async function* patchProgram(
   const system32Dir = join(wine.prefix, "drive_c", "windows", "system32");
   if (wine.attributes.renderBackend == "dxmt") {
     for (const f of DXMT_FILES) {
-      await forceMove(join(system32Dir, f), join(system32Dir, f + ".bak"));
+      if (!(await fileOrDirExists(join(system32Dir, f + ".bak")))) {
+        await forceMove(join(system32Dir, f), join(system32Dir, f + ".bak"));
+      }
       await cp(`./dxmt/${f}`, join(system32Dir, f));
     }
   }
@@ -45,7 +47,7 @@ export async function* patchProgram(
       join(gameDir, "d3dcompiler_47.dll")
     );
   }
-  setKey("patched", "1");
+  await setKey("patched", "1");
 }
 
 export async function* patchRevertProgram(
@@ -61,12 +63,14 @@ export async function* patchRevertProgram(
   const system32Dir = join(wine.prefix, "drive_c", "windows", "system32");
   if (wine.attributes.renderBackend == "dxmt") {
     for (const f of DXMT_FILES) {
-      await forceMove(join(system32Dir, f + ".bak"), join(system32Dir, f));
+      if (await fileOrDirExists(join(system32Dir, f + ".bak"))) {
+        await forceMove(join(system32Dir, f + ".bak"), join(system32Dir, f));
+      }
     }
   }
   if (config.reshade) {
     await removeFileIfExists(join(gameDir, "dxgi.dll"));
     await removeFileIfExists(join(gameDir, "d3dcompiler_47.dll"));
   }
-  setKey("patched", null);
+  await setKey("patched", null);
 }
