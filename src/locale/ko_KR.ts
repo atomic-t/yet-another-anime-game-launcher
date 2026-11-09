@@ -137,4 +137,7 @@ export const ko_KR: typeof zh_CN = {
   REFRESH: "게임 상태 새로고침",
   PAUSE_ANIMATION: "배경 애니메이션 일시정지",
   PLAY_ANIMATION: "배경 애니메이션 재생",
+  SETTING_AUTO_REMOUNT: "외장 드라이브 자동 마운트 / 추출",
+  SETTING_AUTO_REMOUNT_DESC:
+    "실행 및 새로고침 시 외장 드라이브를 자동으로 마운트하고, 게임 종료 시 외장 드라이브를 추출합니다.",
 };

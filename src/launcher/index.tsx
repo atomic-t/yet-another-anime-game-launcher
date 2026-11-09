@@ -1,4 +1,13 @@
-import { openDir, fatal, open, getKeyOrDefault, setKey } from "@utils";
+import {
+  openDir,
+  fatal,
+  open,
+  getKeyOrDefault,
+  setKey,
+  remountExternalDrives,
+  ejectExternalDrives,
+} from "@utils";
+import { CommonUpdateProgram } from "@common-update-ui";
 import {
   Box,
   Button,
@@ -187,10 +196,30 @@ export async function createLauncher({
       }
     }
 
+    function wrapWithAutoRemount(
+      program: () => CommonUpdateProgram
+    ): () => CommonUpdateProgram {
+      return async function* () {
+        if (config.autoRemount) {
+          await remountExternalDrives();
+        }
+        try {
+          yield* program();
+        } finally {
+          if (config.autoRemount) {
+            await ejectExternalDrives();
+          }
+        }
+      };
+    }
+
     async function onRefreshClick() {
       if (programBusy() || isRefreshing()) return;
       setIsRefreshing(true);
       try {
+        if (config.autoRemount) {
+          await remountExternalDrives();
+        }
         if (refreshGameState) {
           await refreshGameState();
         }
@@ -207,7 +236,7 @@ export async function createLauncher({
         if (updateRequired() == true) {
           taskQueue.next(update);
         } else {
-          taskQueue.next(() => launch(config));
+          taskQueue.next(wrapWithAutoRemount(() => launch(config)));
         }
       } else {
         const selection = await selectPath();
@@ -383,7 +412,11 @@ export async function createLauncher({
                   variant="outline"
                   colorScheme="neutral"
                   disabled={programBusy()}
-                  onClick={() => taskQueue.next(launchHoyoplay!).catch(fatal)}
+                  onClick={() =>
+                    taskQueue
+                      .next(wrapWithAutoRemount(launchHoyoplay!))
+                      .catch(fatal)
+                  }
                   style={{
                     "backdrop-filter": "blur(14px)",
                     "-webkit-backdrop-filter": "blur(14px)",
@@ -481,7 +514,7 @@ export async function createLauncher({
                   if (action == "check-integrity") {
                     taskQueue.next(checkIntegrity);
                   } else if (action == "launch-hoyoplay" && launchHoyoplay) {
-                    taskQueue.next(launchHoyoplay);
+                    taskQueue.next(wrapWithAutoRemount(launchHoyoplay));
                   }
                 }}
               ></ConfigurationUI>

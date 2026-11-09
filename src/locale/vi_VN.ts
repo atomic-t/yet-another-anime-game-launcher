@@ -137,4 +137,7 @@ export const vi_VN: typeof zh_CN = {
   REFRESH: "Làm mới trạng thái trò chơi",
   PAUSE_ANIMATION: "Tạm dừng hình ảnh động nền",
   PLAY_ANIMATION: "Phát hình ảnh động nền",
+  SETTING_AUTO_REMOUNT: "Tự động gắn / đẩy ổ đĩa ngoài",
+  SETTING_AUTO_REMOUNT_DESC:
+    "Tự động gắn ổ đĩa ngoài khi khởi chạy/làm mới và đẩy ổ đĩa ngoài khi thoát trò chơi.",
 };

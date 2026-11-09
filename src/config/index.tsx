@@ -36,6 +36,7 @@ import { createSignal, JSXElement, Show } from "solid-js";
 import createReShade from "./reshade";
 import { createProxyEnabledConfig } from "@config/proxy-enabled";
 import { createProxyHostConfig } from "@config/proxy-host";
+import { createAutoRemountConfig } from "./auto-remount";
 
 export async function createConfiguration({
   wine,
@@ -73,6 +74,7 @@ export async function createConfiguration({
 
   const [PRE] = await createProxyEnabledConfig({ locale, config });
   const [PRH] = await createProxyHostConfig({ locale, config });
+  const [ARM] = await createAutoRemountConfig({ locale, config });
 
   const ChannelClientConfig = await configForChannelClient(locale, config);
 
@@ -137,6 +139,7 @@ export async function createConfiguration({
                   >
                     <VStack spacing={"$4"}>
                       <GID />
+                      <ARM />
                       <Divider />
                       <MH />
                       <R />

@@ -139,4 +139,7 @@ export const de_DE: typeof zh_CN = {
   REFRESH: "Spielstatus aktualisieren",
   PAUSE_ANIMATION: "Hintergrundanimation anhalten",
   PLAY_ANIMATION: "Hintergrundanimation abspielen",
+  SETTING_AUTO_REMOUNT: "Externe Laufwerke autom. einbinden/auswerfen",
+  SETTING_AUTO_REMOUNT_DESC:
+    "Externe Laufwerke beim Start/Aktualisieren automatisch einbinden und beim Beenden des Spiels auswerfen.",
 };

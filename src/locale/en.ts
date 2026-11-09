@@ -137,4 +137,7 @@ export const en: typeof zh_CN = {
   REFRESH: "Refresh Game Status",
   PAUSE_ANIMATION: "Pause Background Animation",
   PLAY_ANIMATION: "Play Background Animation",
+  SETTING_AUTO_REMOUNT: "Auto-Mount / Eject External Drives",
+  SETTING_AUTO_REMOUNT_DESC:
+    "Automatically mount external drives on launch/refresh, and eject external physical drives when the game exits.",
 };

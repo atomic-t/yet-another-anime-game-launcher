@@ -141,4 +141,7 @@ export const fr_FR: typeof zh_CN = {
   REFRESH: "Actualiser l'état du jeu",
   PAUSE_ANIMATION: "Mettre en pause l'animation de fond",
   PLAY_ANIMATION: "Lire l'animation de fond",
+  SETTING_AUTO_REMOUNT: "Monter / éjecter automatiquement les disques externes",
+  SETTING_AUTO_REMOUNT_DESC:
+    "Monter automatiquement les disques externes au lancement/actualisation et les éjecter à la fermeture du jeu.",
 };

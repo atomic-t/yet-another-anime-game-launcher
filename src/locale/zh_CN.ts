@@ -132,4 +132,6 @@ export const zh_CN = {
   REFRESH: "刷新游戏状态",
   PAUSE_ANIMATION: "暂停背景动画",
   PLAY_ANIMATION: "播放背景动画",
+  SETTING_AUTO_REMOUNT: "自动挂载/弹出外置磁盘",
+  SETTING_AUTO_REMOUNT_DESC: "在启动和刷新时自动挂载外置磁盘，并在游戏退出后自动弹出外置物理磁盘。",
 };

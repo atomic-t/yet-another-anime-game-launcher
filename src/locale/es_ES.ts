@@ -137,4 +137,7 @@ export const es_ES: typeof zh_CN = {
   REFRESH: "Actualizar estado del juego",
   PAUSE_ANIMATION: "Pausar animación de fondo",
   PLAY_ANIMATION: "Reproducir animación de fondo",
+  SETTING_AUTO_REMOUNT: "Montar / expulsar unidades externas automáticamente",
+  SETTING_AUTO_REMOUNT_DESC:
+    "Montar automáticamente unidades externas al iniciar/actualizar y expulsarlas al salir del juego.",
 };

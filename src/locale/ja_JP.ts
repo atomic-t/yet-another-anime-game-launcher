@@ -138,4 +138,6 @@ export const ja_JP: typeof zh_CN = {
   REFRESH: "状態を更新",
   PAUSE_ANIMATION: "背景アニメーションを一時停止",
   PLAY_ANIMATION: "背景アニメーションを再生",
+  SETTING_AUTO_REMOUNT: "外付けドライブの自動マウント／取り出し",
+  SETTING_AUTO_REMOUNT_DESC: "起動時や更新時に外付けドライブを自動マウントし、ゲーム終了時に自動で取り出します。",
 };
